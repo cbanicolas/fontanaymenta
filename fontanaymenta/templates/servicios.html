@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block title %}Fontana & Menta Inmobiliaria: Ofrecemos el mejor asesoramiento sobre inmuebles{% endblock title %}
+
+{% block contenido %}
+<!-- Begin Main -->
+<div role="main" class="main pgl-bg-grey">
+    <!-- Begin page top -->
+    <section class="page-top page-top-servicios">
+        <div class="container">
+            <div class="page-top-in">
+                <!--<h2><span>Article detail</span></h2>-->
+            </div>
+        </div>
+    </section>
+    <!-- End page top -->
+
+    <!-- Begin content with sidebar -->
+    <div class="container">
+        <div class="row">
+
+            <div class="col-md-8 content">
+                <div class="blog-posts">
+                    <article class="post post-large post-single">
+                        <div class="post-body">
+                            <div class="post-content" style="padding-left: 0px">
+                                <h3><a href="blog-single.html">F<small style="font-weight: 900; color: black">&</small>M Servicios Inmobiliarios</a></h3>
+
+                                <img style="margin-bottom: 10px" src="{{ STATIC_URL }}images/servicios.png"/>
+
+                                <h3>Deseo Vender</h3>
+                                <p>Luego de realizar una tasación adecuada de su propiedad, esta será integrada a nuestros sistema de comercialización, que está formado por múltiples canales de promoción, como por ejemplo: diarios locales, revistas, nuestra web y portales en internet, para de esta manera llegar a la mayor cantidad de clientes y a la mejor operación.</p>
+
+                                <h3>Deseo Comprar</h3>
+                                <p>En nuestra base de propiedades puede encontrar el inmueble de su interés y de no ser así nos encargamos de buscarle la propiedad que nos indique. Este servicio le posibilitará ahorrar tiempo y dinero, ya que nuestro sistema de búsqueda está informatizado y realizamos la búsqueda en la base de inmuebles que disponen más de 150 inmobiliarias. </p>
+
+                                <h3>Necesito Tasar</h3>
+                                <p>Las tasaciones que se hacemos se basan en un procedimiento que procura obtener el Valor Real de Mercado, denominado, “método comparativo de antecedentes”. Para ello nos mantenemos permanentemente actualizados en las variaciones del mercado inmobiliario y en la oferta y demanda de inmuebles. </p>
+
+                                <h3>Alquileres y Administraciones</h3>
+                                <p>Con nuestro sistema de comercialización realizamos el ofrecimiento de sus propiedades y también la búsqueda de inquilinos, analizando y verificando su capacidad de pago, antecedentes laborales, crediticios y garantías ofrecidas. En caso de ser solicitado, también administramos su locación- </p>
+
+                                <h3>Gestión y asesoramiento en créditos hipotecarios</h3>
+                                <p>Estamos vinculados a entidades financieras de primera línea y recibimos una atención preferencial, y capacidad permanente, lo que a usted le reportará acceder las mejores condiciones de crédito, ahorrando tiempo y dinero. .</p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <div class="col-md-4 sidebar">
+                <!-- Begin Posts By Category -->
+                <aside class="block pgl-cat pgl-bg-light">
+                    <h3>Nuestra inmobiliaria</h3>
+
+                    <div class="row">
+                        <div class="col-md-2"><img src="{{ STATIC_URL }}images/badge.png"/> </div>
+                        <div class="col-md-10">
+                            <strong>Asesoramiento</strong>
+                            <p>Compra, Venta, Alquiler, Créditos Bancarios, etc.</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><img src="{{ STATIC_URL }}images/badge.png"/> </div>
+                        <div class="col-md-10">
+                            <strong>Administracion de alquileres</strong>
+                            <p>Publicación permanente en medios gráficos e Internet en 7 Portales Inmobiliarios de los más visitados a nivel Provincial, Nacional e Internacional.</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-2"><img src="{{ STATIC_URL }}images/badge.png"/> </div>
+                        <div class="col-md-10">
+                            <strong>Tasaciones</strong>
+                            <p>Tasaciones a Valor real de Mercado: Venta y Alquileres de propiedades Urbanas, Rurales y Turísticas.</p>
+                        </div>
+                    </div>
+
+                </aside>
+                <!-- End Posts By Category -->
+            </div>
+
+        </div>
+    </div>
+    <!-- End content with sidebar -->
+
+</div>
+<!-- End Main -->
+{% endblock %}

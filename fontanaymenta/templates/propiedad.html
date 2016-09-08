@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block title %}{{ propiedad.titulo }}, {{ propiedad.localidad }}{% endblock title %}
+
+{% block extra_files %}{% endblock extra_files %}
+
+{% block contenido %}
+
+<!-- Begin Main -->
+<div role="main" class="main pgl-bg-grey">
+    <!-- Begin page top -->
+    <section class="page-top page-top-detalle">
+        <div class="container">
+            <div class="page-top-in">
+                <h2><span>{{ propiedad.titulo }}</span></h2>
+            </div>
+        </div>
+    </section>
+    <!-- End page top -->
+
+    <!-- Begin content with sidebar -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 content">
+
+                <section class="pgl-pro-detail pgl-bg-light">
+
+                    <div id="slider" class="flexslider">
+                        <ul class="slides">
+                            {% for image in propiedad.propiedadimagen_set.all %}
+                                <li>
+                                    {% thumbnail image "870x570" crop="center" as im %}
+                                        <img src="{{ im.url }}" alt="{{ propiedad.titulo }}">
+                                    {% endthumbnail %}
+                                    <span class="property-thumb-info-label">
+                                        {% if propiedad.precio %}<span class="label price">${{ propiedad.precio }}</span>{% endif %}
+                                        <span class="label forrent">{{ propiedad.get_condicion_display }}</span>
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div id="carousel" class="flexslider">
+                        <ul class="slides">
+                            {% for image in propiedad.propiedadimagen_set.all %}
+                                {% thumbnail image "150x100" crop="center" as im %}
+                                    <li> <img src="{{ im.url }}" alt="{{ propiedad.titulo }}"></li>
+                                {% endthumbnail %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="pgl-detail">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <ul class="list-unstyled amenities amenities-detail">
+                                    <li><strong>Condición:</strong> {{ propiedad.get_condicion_display }}</li>
+                                    <li><strong>Tipo:</strong> {{ propiedad.tipo }}</li>
+                                    <li><address><i class="icons icon-location"></i>{{ propiedad.direccion }} / {{ propiedad.localidad }}</address></li>
+                                    {# <li><i class="icons icon-bedroom"></i> 3 Bedrooms</li> #}
+                                    {# <li><i class="icons icon-bathroom"></i> 2 Bathrooms</li> #}
+                                </ul>
+                            </div>
+                            <div class="col-sm-8">
+                                <h2>{{ propiedad.titulo }}</h2>
+                                {{ propiedad.descripcion|safe }}
+                            </div>
+                        </div>
+
+                        <div class="tab-detail">
+                            <h3>Más Información</h3>
+                            <div class="panel-group" id="accordion">
+                                {% if propiedad.servicios.all %}
+                                <div class="panel panel-default pgl-panel">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Servicios</a> </h4>
+                                    </div>
+                                    <div id="collapseOne" class="panel-collapse collapse in">
+                                        <div class="panel-body">
+                                            <ul>
+                                                {% for item in propiedad.propiedadservicio_set.all %}
+                                                    <li><strong>{{ item.servicio }}:</strong> {{ item.info }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div class="panel panel-default pgl-panel">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" class="collapsed">Contáctanos</a> </h4>
+                                    </div>
+                                    <div id="collapseFive" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <p>Para contactarnos por esta propiedad hace click <a href="{% url 'contacto' %}?id={{ propiedad.id }}#contact-form">aquí</a> y completá el formulario.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Begin Related properties -->
+                <section class="pgl-properties">
+                    <h2>Propieadades Relacionadas</h2>
+                    <div class="row">
+                        <div class="owl-carousel pgl-pro-slide" data-plugin-options='{"items": 3, "itemsDesktop": 3, "singleItem": false, "autoPlay": false, "pagination": false}'>
+                            {% for item in propiedades_relacionadas %}
+                                <div class="col-md-12 animation">
+                                    <div class="pgl-property">
+                                        <div class="property-thumb-info">
+                                            <div class="property-thumb-info-image">
+                                                {% thumbnail item.propiedadimagen_set.all.0 "400x267" crop="center" as im %}
+                                                    <img src="{{ im.url }}" alt="{{ item.titulo }}" class="img-responsive">
+                                                {% endthumbnail %}
+                                                <span class="property-thumb-info-label">
+                                                    {% if item.precio %}<span class="label price">${{ item.precio }}</span>{% endif %}
+                                                    <span class="label forrent">{{ item.get_condicion_display }}</span>
+                                                </span>
+                                            </div>
+                                            <div class="property-thumb-info-content">
+                                                <h3><a href="{% url 'propiedad_detalle' tit_slug=item.slug %}">{{ item.titulo }}</a></h3>
+                                                <address>{{ item.direccion }}, {{ item.localidad }}</address>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </section>
+                <!-- End Related properties -->
+
+            </div>
+            <div class="col-md-3 sidebar">
+                <!-- Begin Advanced Search -->
+                <aside class="block pgl-advanced-search pgl-bg-light">
+                    <h3>Búsqueda</h3>
+                    <form name="advancedsearch" method="get" action="{% url 'lista' %}">
+                        <div class="form-group">
+                            <label class="sr-only" for="condicion">Condición</label>
+                            <select id="condicion" name="condicion" data-placeholder="Condición" class="chosen-select">
+                                <option selected="selected" value="">Condición</option>
+                                <option value="1">Venta</option>
+                                <option value="2">Alquiler</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="localidad">Localidad</label>
+                            <select id="localidad" name="localidad" data-placeholder="localidad" class="chosen-select">
+                                <option selected="selected" value="">Localidad</option>
+                                {% for item in localidades %}
+                                    <option value="{{ item.pk }}">{{ item.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="sr-only" for="tipo">Tipo</label>
+                            <select id="tipo" name="tipo" data-placeholder="Tipo" class="chosen-select">
+                                <option selected="selected" value="">Tipo</option>
+                                {% for item in tipos %}
+                                    <option value="{{ item.pk }}">{{ item.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-primary">Buscar</button>
+                        </div>
+                    </form>
+                </aside>
+                <!-- End Advanced Search -->
+
+            </div>
+        </div>
+    </div>
+    <!-- End content with sidebar -->
+
+</div>
+<!-- End Main -->
+
+{% endblock contenido %}

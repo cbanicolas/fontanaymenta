@@ -1,0 +1,255 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block title %}Fontana & Menta Inmobiliaria: Ofrecemos el mejor asesoramiento sobre inmuebles{% endblock title %}
+
+{% block contenido %}
+<!-- Begin Main -->
+<div role="main" class="main">
+    <!-- Begin Main Slide -->
+    <section class="main-slide">
+        <div id="owl-main-slide" class="owl-carousel pgl-main-slide" data-plugin-options='{"autoPlay": true}'>
+            {% for item in sliders %}
+                <div class="item" id="item{{ forloop.counter }}"><img src="{{ item.file.url }}" alt="{{ item.titulo }}" class="img-responsive">
+                    {% if item.mostrar_info %}
+                        <div class="item-caption">
+                            <div class="container">
+                                <div class="property-info">
+                                    <span class="property-thumb-info-label">
+                                        <span class="label price">{{ item.precio }}</span>
+                                        <span class="label"><a href="{{ item.link }}" class="btn-more">Mas detalles</a></span>
+                                    </span>
+                                    <div class="property-thumb-info-content">
+                                        <h2><a href="{{ item.link }}">{{ item.titulo }}</a></h2>
+                                        <p>{{ item.descripcion }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <!-- End Main Slide -->
+
+    <!-- Begin Advanced Search -->
+    <section class="pgl-advanced-search pgl-bg-light">
+        <div class="container">
+            <form name="advancedsearch" method="get" action="{% url 'lista' %}">
+
+                <div class="row">
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <label class="sr-only" for="condicion">Condición</label>
+                            <select id="condicion" name="condicion" data-placeholder="Condición" class="chosen-select">
+                                <option selected="selected" value="">Condición</option>
+                                <option value="1">Venta</option>
+                                <option value="2">Alquiler</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <label class="sr-only" for="localidad">Localidad</label>
+                            <select id="localidad" name="localidad" data-placeholder="localidad" class="chosen-select">
+                                <option selected="selected" value="">Localidad</option>
+                                {% for item in localidades %}
+                                    <option value="{{ item.pk }}">{{ item.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <label class="sr-only" for="tipo">Tipo</label>
+                            <select id="tipo" name="tipo" data-placeholder="Tipo" class="chosen-select">
+                                <option selected="selected" value="">Tipo</option>
+                                {% for item in tipos %}
+                                    <option value="{{ item.pk }}">{{ item.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-primary">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </section>
+    <!-- End Advanced Search -->
+
+    <!-- Begin Featured -->
+    <section class="pgl-featured pgl-bg-grey">
+        <div class="container">
+            <div class="row">
+                {% for item in destacados %}
+                    <div class="{% if forloop.first %}col-md-6 animation{% else %}col-xs-6 col-md-3 animation{% endif %}">
+                        <div class="pgl-property featured-item">
+                            <div class="property-thumb-info">
+                                <div class="property-thumb-info-image">
+                                    {% thumbnail item.propiedadimagen_set.all.0 "400x267" crop="center" as im %}
+                                        <img src="{{ im.url }}" alt="{{ item.titulo }}" class="img-responsive">
+                                    {% endthumbnail %}
+                                </div>
+                                <div class="property-thumb-info-content">
+                                    <h3><a href="{% url 'propiedad_detalle' tit_slug=item.slug %}">{{ item.titulo }}</a></h3>
+                                    {# <p>{{ item.descripcion|truncatewords:5|striptags|safe }}</p> #}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <hr class="top-tall">
+        </div>
+    </section>
+    <!-- End Featured -->
+
+    <!-- Begin Properties -->
+    <section class="pgl-properties pgl-bg-grey">
+        <div class="container">
+            <h2>Últimas Propiedades</h2>
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane active" id="all">
+                    {% for item in propieadades %}
+                        {% if forloop.counter|divisibleby:3 %}<div class="row">{% endif %}
+                        <div class="col-xs-4 animation">
+                            <div class="pgl-property">
+                                <div class="property-thumb-info">
+                                    <div class="property-thumb-info-image">
+                                        {% thumbnail item.propiedadimagen_set.all.0 "400x267" crop="center" as im %}
+                                            <img src="{{ im.url }}" alt="{{ item.titulo }}" class="img-responsive">
+                                        {% endthumbnail %}
+                                        <span class="property-thumb-info-label">
+                                            {% if item.precio %}<span class="label price">${{ item.precio }}</span>{% endif %}
+                                            <span class="label forrent">{{ item.get_condicion_display }}</span>
+                                        </span>
+                                    </div>
+                                    <div class="property-thumb-info-content">
+                                        <h3><a href="{% url 'propiedad_detalle' tit_slug=item.slug %}">{{ item.titulo }}</a></h3>
+                                        <address>{{ item.direccion }}, {{ item.localidad }}</address>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        {% if forloop.counter|divisibleby:3 %}</div>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- End Properties -->
+
+    <!-- Begin About -->
+    <section class="pgl-about">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 animation about-item">
+                    <h2>Quienes somos</h2>
+                    <!--<p><img src="{{STATIC_URL}}images/content/demo-1.jpg" alt="" class="img-responsive"></p>-->
+                    <p>Somos un grupo dinámico, proactivo y joven compuesto por profesionales inmobiliarios, ingenieros y arquitectos. Ofrecemos un servicio y asesoramiento integral en la realización de cualquier tipo de operación inmobiliaria y de construcción.</p>
+                    <p>Nuestra permanente capacitación, seriedad, responsabilidad, discreción y el deseo de involucrarnos en sus metas y objetivos como propios, en lo que respecta a sus necesidades inmobiliarias, hacen que nuestra labor este dirigida a ofrecerle un servicio inmobiliario de excelencia y alto valor agregado.</p>
+                    <p>Disponemos de los recursos, experiencia y capacidad necesaria para que al momento de atenderlo lo orientemos a hacer su mejor compra, venta, locación o inversión. En FONTANA Y MENTA Servicios Inmobiliarios usted recibirá un tratamiento comprometido, personalizado y cordial para que de esta manera siempre se sienta acompañado.</p>
+                    <!--<a href="about-us.html" class="btn btn-lg btn-default">Ver más</a>-->
+                </div>
+                <div class="col-md-4 animation about-item">
+                    <h2>Porque F<small style="font-weight: 900; color: black">&</small>M</h2>
+                    <div class="panel-group" id="accordion">
+                        <div class="panel panel-default pgl-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Ventaja 1</a> </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium, totam rem aperiam.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default pgl-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed">Ventaja 2</a> </h4>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body"> <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium, totam rem aperiam.</p> </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default pgl-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed">Ventaja 3</a> </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium, totam rem aperiam.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default pgl-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseFouth" class="collapsed">Ventaja 4</a> </h4>
+                            </div>
+                            <div id="collapseFouth" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium, totam rem aperiam.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default pgl-panel">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" class="collapsed">Ventaja 5</a> </h4>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium, totam rem aperiam.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 animation about-item">
+                    <h2>Que dicen:</h2>
+                    <div class="owl-carousel pgl-bg-dark pgl-testimonial" data-plugin-options='{"items": 1, "pagination": false, "autoHeight": true}'>
+                        <div class="col-md-12">
+                            <div class="testimonial-author">
+                                <div class="img-thumbnail-small img-circle">
+                                    <img src="{{STATIC_URL}}images/agents/agent-1.jpg" class="img-circle" alt="Andrew MCCarthy">
+                                </div>
+                                <h4>Santiago De Fazi</h4>
+                                <p><strong>Vendedor</strong></p>
+                            </div>
+                            <div class="divider-quote-sign"><span>“</span></div>
+                            <blockquote class="testimonial">
+                                <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium totam rem.</p>
+                            </blockquote>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="testimonial-author">
+                                <div class="img-thumbnail-small img-circle">
+                                    <img src="{{STATIC_URL}}images/agents/agent-1.jpg" class="img-circle" alt="John Smith">
+                                </div>
+                                <h4>Carlos Gomez</h4>
+                                <p><strong>Inquilino</strong></p>
+                            </div>
+                            <div class="divider-quote-sign"><span>“</span></div>
+                            <blockquote class="testimonial">
+                                <p>Sed perspiciatis unde omnisiste natus error voluptatem remopa accusantium doloremque laudantium totam rem.</p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End About -->
+
+</div>
+<!-- End Main -->
+{% endblock %}

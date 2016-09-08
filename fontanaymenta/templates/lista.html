@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+{% load el_pagination_tags %}
+
+{% block title %}{% endblock title %}
+
+{% block extra_files %}{% endblock extra_files %}
+
+{% block contenido %}
+
+<!-- Begin Main -->
+<div role="main" class="main pgl-bg-grey">
+    <!-- Begin page top -->
+    <section class="page-top page-top-lista">
+        <div class="container">
+            <div class="page-top-in">
+                <h2></h2>
+            </div>
+        </div>
+    </section>
+    <!-- End page top -->
+
+    <!-- Begin Advanced Search -->
+    <section class="pgl-advanced-search pgl-bg-light">
+        <div class="container">
+            <form name="advancedsearch" method="get" action="{% url 'lista' %}">
+
+                <div class="row">
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <label class="sr-only" for="condicion">Condición</label>
+                            <select id="condicion" name="condicion" data-placeholder="Condición" class="chosen-select">
+                                <option value="">Condición</option>
+                                <option value="1" {% ifequal request.GET.condicion|add:0 1 %}selected{% endifequal %}>Venta</option>
+                                <option value="2" {% ifequal request.GET.condicion|add:0 2 %}selected{% endifequal %}>Alquiler</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <label class="sr-only" for="localidad">Localidad</label>
+                            <select id="localidad" name="localidad" data-placeholder="localidad" class="chosen-select">
+                                <option value="">Localidad</option>
+                                {% for item in localidades %}
+                                    <option value="{{ item.pk }}" {% ifequal item.id request.GET.localidad|add:0 %}selected{% endifequal %}>{{ item.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <label class="sr-only" for="tipo">Tipo</label>
+                            <select id="tipo" name="tipo" data-placeholder="Tipo" class="chosen-select">
+                                <option value="">Tipo</option>
+                                {% for item in tipos %}
+                                    <option value="{{ item.pk }}" {% if item.pk == request.GET.tipo|add:0 %}selected{% endif %}>{{ item.titulo }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 col-sm-3">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-block btn-primary">Buscar</button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </section>
+    <!-- End Advanced Search -->
+
+    <!-- Begin Properties -->
+    <section class="pgl-properties pgl-bg-grey">
+        <div class="container">
+            <h2>{% if titulo.condicion %}{{ titulo.condicion  }} de {% endif %}
+                {% if titulo.tipo %}{{ titulo.tipo }}{% else %}Propiedades{% endif %} {% if titulo.localidad %}en {{ titulo.localidad }}{% endif %}</h2>
+            <div class="properties-full properties-listing properties-listfull">
+                {% paginate 20 propiedades %}
+                {% for item in propiedades %}
+                <div class="pgl-property animation">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-4">
+                            <div class="property-thumb-info-image">
+                                {% thumbnail item.propiedadimagen_set.all.0 "400x267" crop="center" as im %}
+                                    <img src="{{ im.url }}" alt="{{ item.titulo }}" class="img-responsive">
+                                {% endthumbnail %}
+                                <span class="property-thumb-info-label">
+                                    {% if item.precio %}<span class="label price">${{ item.precio }}</span>{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-md-8">
+                            <div class="property-thumb-info">
+                                <div class="property-thumb-info-content">
+                                    <h3><a href="{% url 'propiedad_detalle' tit_slug=item.slug %}">{{ item.titulo }}</a></h3>
+                                    <address>{{ item.direccion }}, {{ item.localidad }}</address>
+                                    <p>{{ item.descripcion|truncatewords:30|striptags|safe }}</p>
+                                </div>
+                                <div class="amenities clearfix">
+                                    <ul class="pull-left">
+                                        <li><strong>Tipo:</strong> {{ item.tipo }}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% show_pages %}
+            </div>
+        </div>
+    </section>
+    <!-- End Properties -->
+
+</div>
+<!-- End Main -->
+
+{% endblock contenido %}
