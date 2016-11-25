@@ -80,6 +80,7 @@ class PropiedadImagen(models.Model):
     class Meta:
         verbose_name = 'Imagen'
         verbose_name_plural = 'Imágenes'
+        ordering = ['id']
 
     def __unicode__(self):
         return self.imagen.name

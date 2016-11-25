@@ -94,7 +94,8 @@ def contacto(request):
             'message': request.POST['message'],
             'from_email' : settings.DEFAULT_FROM_EMAIL,
             'reply_to' : request.POST['email'],
-            'to': settings.DEFAULT_FROM_EMAIL,
+            #'to': settings.DEFAULT_FROM_EMAIL,
+            'to' : 'fontanamenta@gmail.com',
         }
         if enviar_mail(mail=mail):
             messages.success(request, 'Gracias por contactarte, a la brevedad responderemos tu consulta.')

@@ -36,7 +36,7 @@
                             <address>
                                 <strong>Teléfono.</strong> 3572-436904 / 3572-536634<br>
                                 <!--<strong>Fax.</strong> 012.666.999<br>-->
-                                <strong>Email.</strong> info@fontanaymenta.com.ar
+                                <strong>Email.</strong> fontanamenta@gmail.com
                             </address>
                         </div>
                     </div>
@@ -95,25 +95,26 @@
 
 {% block extra_files_bottom %}
 	<!-- Contact Settings -->
+    <!-- ver para mapa: http://www.okler.net/forums/topic/how-to-change-the-map-location/ -->
 	<script src="{{STATIC_URL}}js/contact.js"></script>
 
 	<script>
 
-		// Map Markers
-		var mapMarkers = [{
-			address: "9 de Julio1 870, Pilar, Córdoba",
-			html: "9 de Julio 870, Pilar, Córdoba",
-			popup: true,
-			icon: {
-				image: "{{STATIC_URL}}images/makers/marker.png",
-				iconsize: [26, 33],
-				iconanchor: [26, 33]
-			}
-		}];
+        // Map Markers
+        var mapMarkers = [{
+            latitude: -31.680794,
+            longitude: -63.883138,
+            content: "<strong>9 de Julio 870, Pilar, Córdoba</strong>",
+            icon: {
+                image: "{{STATIC_URL}}images/makers/marker.png",
+                iconsize: [26, 33],
+                iconanchor: [12, 33]
+            }
+        }];
 
-		// Map Initial Location
-		var initLatitude = -31.680790;
-		var initLongitude = -63.883135;
+        // Map Initial Location
+        var initLatitude = -31.680794;
+        var initLongitude = -63.883138;
 
 		// Map Extended Settings
 		var mapSettings = {
