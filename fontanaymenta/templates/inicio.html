@@ -98,7 +98,7 @@
                                 </div>
                                 <div class="property-thumb-info-content">
                                     <h3><a href="{% url 'propiedad_detalle' tit_slug=item.slug %}">{{ item.titulo }}</a></h3>
-                                    {# <p>{{ item.descripcion|truncatewords:5|striptags|safe }}</p> #}
+                                    <p>{{ item.direccion }}, {{ item.localidad }}</p>
                                 </div>
                             </div>
                         </div>
